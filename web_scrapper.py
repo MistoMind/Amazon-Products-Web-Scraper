@@ -7,8 +7,11 @@ prices = []
 ratings = []
 no_reviews = []
 urls = []
+description = []
+asin = []
+manufacturer = []
 
-for i in range(0, 21):
+for i in range(0, 15):
     URL = f"https://www.amazon.in/s?k=bags&crid=2M096C61O4MLT&qid=1653308124&sprefix=ba%2Caps%2C283&ref=sr_pg_{i}"
 
     header = {
@@ -27,7 +30,7 @@ for i in range(0, 21):
                 details = product.find(name='div', class_='sg-col sg-col-4-of-12 sg-col-8-of-16 sg-col-12-of-20 s-list-col-right')
                 # print(details)
                 if details != None:
-                    url = "https://www.amazon.in/" + details.find(name='a', class_='a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal')['href']
+                    url = "https://www.amazon.in" + details.find(name='a', class_='a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal')['href']
                     name = details.find(name='span', class_='a-size-medium a-color-base a-text-normal').string
                     price = details.find(name='div', class_='a-row a-size-base a-color-base')
                     # Check if product is Temporarily out of stock.
@@ -41,13 +44,50 @@ for i in range(0, 21):
                         no_reviews.append(reviews)
                         urls.append(url)
 
+                        response = requests.get(url=url, headers=header).text
+                        print(url)
+
+                        soup = BeautifulSoup(response, "lxml")
+
+                        find_desc = soup.find('div', {'id': 'feature-bullets'})
+                        temp = ""
+                        for desc in find_desc.find_all('span', class_='a-list-item'):
+                            temp = temp + desc.string + "\n"
+                        description.append(temp)
+
+                        # Checking if Product Details is in tabular form or list form
+                        if soup.find('table', {'id': 'productDetails_detailBullets_sections1'}) != None:
+                            # For Tabular Formatted Product Details
+                            find_manufacturer = soup.find('table', {'id': 'productDetails_techSpec_section_1'})
+                            all_types = find_manufacturer.find_all(name='th', class_='a-color-secondary a-size-base prodDetSectionEntry')
+                            all_values = find_manufacturer.find_all(name='td', class_='a-size-base prodDetAttrValue')
+                            for i in range(0, len(all_types)):
+                                if all_types[i].string.strip() == 'Manufacturer':
+                                    manufacturer.append(all_values[i].string.strip())
+                                    break
+
+                            find_asin = soup.find('table', {'id': 'productDetails_detailBullets_sections1'})
+                            asin.append(find_asin.find(name='td', class_='a-size-base prodDetAttrValue').string)
+                        else:
+                            # For List Formatted Product Details
+                            soup = soup.find(name='ul', class_='a-unordered-list a-nostyle a-vertical a-spacing-none detail-bullet-list')
+                            for item in soup.find_all(name='span', class_='a-list-item'):
+                                type = item.contents[1].string.split(' ')[0]
+                                if type == 'Manufacturer\n':
+                                    manufacturer.append(item.contents[3].string)
+                                if type == 'ASIN\n':
+                                    asin.append(item.contents[3].string)
+
 data = pd.DataFrame({
-        'Name': names, 
-        'Price': prices, 
-        'Rating': ratings, 
-        'Number of Reviews': no_reviews, 
-        'URL': urls
-    })
+    'Name': names, 
+    'Price': prices, 
+    'Rating': ratings, 
+    'Number of Reviews': no_reviews, 
+    'URL': urls,
+    'Description': description,
+    'ASIN': asin,
+    'Manufacturer': manufacturer
+})
 
 print(data)
-data.to_csv("Amazon Product List.csv")
+data.to_csv("Amazon Product List part 2.csv")
