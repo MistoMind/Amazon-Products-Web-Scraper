@@ -6,8 +6,8 @@ asin = []
 manufacturer = []
 
 # TABULAR_URL = "https://www.amazon.in/HEROZ-Backpack-Resistant-Durable-Notebook/dp/B08BYQZYYC/ref=sr_1_12_sspa?crid=2M096C61O4MLT&keywords=bags&qid=1675253937&sprefix=ba%2Caps%2C283&sr=8-12-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9tdGY&th=1"
-TABULAR_URL = "https://www.amazon.in//American-Tourister-AMT-SCH-02/dp/B07CJCGM1M/ref=sr_1_3?crid=2M096C61O4MLT&keywords=bags&qid=1675316969&sprefix=ba%2Caps%2C283&sr=8-3"
-# LIST_URL = "https://www.amazon.in/Safari-Backpack-Resistant-Polyester-Travelling/dp/B09B26VHXV/ref=sr_1_10?crid=2M096C61O4MLT&keywords=bags&qid=1675253937&sprefix=ba%2Caps%2C283&sr=8-10&th=1"
+TABULAR_URL = "https://www.amazon.in/American-Tourister-AMT-SCH-02/dp/B07CJCGM1M/ref=sr_1_3?crid=2M096C61O4MLT&keywords=bags&qid=1675342319&sprefix=ba%2Caps%2C283&sr=8-3"
+LIST_URL = "https://www.amazon.in/Safari-Backpack-Resistant-Polyester-Travelling/dp/B09B26VHXV/ref=sr_1_10?crid=2M096C61O4MLT&keywords=bags&qid=1675253937&sprefix=ba%2Caps%2C283&sr=8-10&th=1"
 
 header = {
     "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8,hi;q=0.7",
