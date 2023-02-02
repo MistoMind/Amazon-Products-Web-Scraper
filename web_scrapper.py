@@ -15,7 +15,7 @@ product_number = 0
 
 for page_no in range(1, 12):
     URL = f"https://www.amazon.in/s?k=bags&crid=2M096C61O4MLT&qid=1653308124&sprefix=ba%2Caps%2C283&ref=sr_pg_{page_no}"
-    print(f"Page Number: [{page_no}]\n")
+    print(f"\nPage Number: [{page_no}]\n")
 
     header = {
         "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8,hi;q=0.7",
@@ -48,8 +48,6 @@ for page_no in range(1, 12):
                         urls.append(url)
 
                         response = requests.get(url=url, headers=header).text
-                        product_number += 1
-                        print(f"[{product_number}] : {url}")
 
                         soup = BeautifulSoup(response, "lxml")
 
@@ -83,7 +81,19 @@ for page_no in range(1, 12):
                                     found_manu = True
                                 if type == 'ASIN\n':
                                     asins.append(item.contents[3].string)
+                            
+                            if found_manu == False:
+                                manufacturers.append("Not Available")
 
+                        # Print Product Number with URL
+                        product_number += 1
+                        print(f"[{product_number}] : {url}")
+
+                        # Print Detail of current Product
+                        # print(f"Name: {names[product_number-1]}\nPrice: {prices[product_number-1]}\nRating: {ratings[product_number-1]}\nNumber of Review: {no_reviews[product_number-1]}\nURL: {urls[product_number-1]}\nDescription: {descriptions[product_number-1]}\nASIN: {asins[product_number-1]}\nManufacturer: {manufacturers[product_number-1]}\n")
+                        
+
+print("\nNumber of Products")
 print(f"Name's: {len(names)}\nPrice's: {len(prices)}\nRating's: {len(ratings)}\nNumber of Reviews: {len(no_reviews)}\nURL's: {len(urls)}\nDescriptions: {len(descriptions)}\nASIN's: {len(asins)}\nManufacturers: {len(manufacturers)}")
 
 data = pd.DataFrame({
